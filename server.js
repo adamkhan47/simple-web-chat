@@ -11,7 +11,6 @@ const fileContents = fs.readFileSync('config.yaml', 'utf8');
 const config = yaml.load(fileContents);
 
 const PORT = config.port;
-const WSPORT = 1000;
 let LISTENING = config.listen;
 if (LISTENING === "local") {LISTENING = '127.0.0.1';}
 else if (LISTENING === "all") {LISTENING = '0.0.0.0'} 
@@ -26,7 +25,7 @@ const options = {
 };
 const server = https.createServer(options, app);
 
-const wss = new WebSocket.Server({ port: Number(WSPORT)});
+const wss = new WebSocket.Server({ server});
 wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {
         if (betterConsole) {console.log('received: %s', message);}
@@ -54,17 +53,7 @@ server.listen(PORT, LISTENING, () => {
   console.log(`Server running on http://localhost:${PORT}`);
   console.log(`Listening on ${LISTENING}`);
 });
-
-
-
-
-
-
-
-
-
-
-
+//#region http redirect
 const http = require('http');
 const httpApp = express();
 httpApp.use((req, res) => {
@@ -73,3 +62,4 @@ httpApp.use((req, res) => {
 const httpServer = http.createServer(httpApp);
 httpServer.listen(80, LISTENING, () => {
 });
+//#endregion
