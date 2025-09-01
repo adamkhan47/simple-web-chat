@@ -50,3 +50,7 @@ socket.onopen = function(event) {
 function settings() {
     window.open("/settings", "_blank");
 }
+function clearMessages() {
+    let result = confirm("Are you sure you want to clear previous messages?");
+    if (result) {document.getElementById("messages").innerHTML = "";}
+}
