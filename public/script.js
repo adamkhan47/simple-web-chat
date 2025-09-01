@@ -32,3 +32,6 @@ socket.onclose = function(event) {
 socket.onopen = function(event) {
     document.getElementById("status").innerHTML = "🟢";
 }
+function settings() {
+    window.open("/settings", "_blank");
+}
