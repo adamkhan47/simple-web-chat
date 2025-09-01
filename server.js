@@ -10,7 +10,7 @@ const fileContents = fs.readFileSync('config.yaml', 'utf8');
 const config = yaml.load(fileContents);
 
 const PORT = config.port;
-const WSPORT = config.secondaryport;
+const WSPORT = 1000;
 let LISTENING = config.listen;
 if (LISTENING === "local") {LISTENING = '127.0.0.1';}
 else if (LISTENING === "all") {LISTENING = '0.0.0.0'} 

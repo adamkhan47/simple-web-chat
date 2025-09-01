@@ -1,5 +1,5 @@
 let user = "";
-const socket = new WebSocket("ws://localhost:1000");
+const socket = new WebSocket("ws://" + location.hostname + ":" + 1000);
 window.onload = function() {
     try {
         user = localStorage.getItem("username");
