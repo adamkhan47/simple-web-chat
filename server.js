@@ -17,6 +17,19 @@ let environment = config.environment;
 
 // #endregion 
 
+//#region endpoints
+
+app.get('/send', (req, res) => {
+let arrayThing = req.query;
+    try {
+        if (!arrayThing.username || !arrayThing.messageContents || !environment) {throw new Error("crash.");}
+        // res.send( scrapeGrades(arrayThing.username, arrayThing.password, environment, hac));
+        if (betterConsole) {console.log("Received message" + arrayThing);}
+    }
+    catch (error) {res.send("Not correct way to send data")};
+});
+
+//#endregion
 app.use(express.static(path.join(__dirname, "public")));
 app.listen(PORT, LISTENING, () => {
   console.log(`Server running on http://localhost:${PORT}`);
