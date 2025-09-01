@@ -26,3 +26,9 @@ function send() {
 socket.onmessage = function(event) {
     document.getElementById("messages").innerHTML = event.data + '<br>' + document.getElementById("messages").innerHTML;
 }
+socket.onclose = function(event) {
+    document.getElementById("status").innerHTML = "🔴";
+}
+socket.onopen = function(event) {
+    document.getElementById("status").innerHTML = "🟢";
+}
