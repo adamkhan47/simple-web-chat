@@ -54,3 +54,13 @@ function clearMessages() {
     let result = confirm("Are you sure you want to clear previous messages?");
     if (result) {document.getElementById("messages").innerHTML = "";}
 }
+
+const statusText = document.getElementById('status');
+const hoverImage = document.querySelector('.hover-image');
+hoverImage.style.display = 'none';
+statusText.addEventListener('mouseenter', () => {
+    hoverImage.style.display = 'block';
+});
+statusText.addEventListener('mouseleave', () => {
+    hoverImage.style.display = 'none';
+});
