@@ -24,5 +24,5 @@ function send() {
     socket.send(array);
 }
 socket.onmessage = function(event) {
-    document.getElementById("messages").innerHTML += event.data + '<br>';
+    document.getElementById("messages").innerHTML = event.data + '<br>' + document.getElementById("messages").innerHTML;
 }

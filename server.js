@@ -15,7 +15,6 @@ let LISTENING = config.listen;
 if (LISTENING === "local") {LISTENING = '127.0.0.1';}
 else if (LISTENING === "all") {LISTENING = '0.0.0.0'} 
 const betterConsole = config.alerts;
-let environment = config.environment;
 
 // #endregion 
 
@@ -28,7 +27,9 @@ wss.on('connection', function connection(ws) {
         wss.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
                 let array = JSON.parse(message.toString());
-                let string = array[0] + ": " + array[1];
+                let now = new Date();
+                let timeString = now.toLocaleTimeString();
+                let string = array[0] + " (" + timeString + "): " + array[1];
                 client.send(string);
             }
         });

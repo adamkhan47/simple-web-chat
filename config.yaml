@@ -6,5 +6,3 @@ listen: "all"
 # all: is if you want every device to be able to access this
 
 alerts: true # better console.logs
-
-environment: "user" # use dev if building and use "user" for normal use
