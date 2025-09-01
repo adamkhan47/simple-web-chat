@@ -18,6 +18,6 @@ function setUser() {
     document.getElementById("user").innerHTML = user;
 }
 function send() {
-    let contents = document.getElementById("inputText").innerHTML;
-    fetch('/send?username='+username+'&messageContents='+contents);
+    let contents = document.getElementById("inputText").value;
+    fetch('/send?username='+user+'&messageContents='+contents);
 }
