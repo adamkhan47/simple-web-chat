@@ -1,4 +1,5 @@
 let user = "";
+const socket = new WebSocket("ws://localhost:1000");
 window.onload = function() {
     try {
         user = localStorage.getItem("username");
@@ -19,5 +20,8 @@ function setUser() {
 }
 function send() {
     let contents = document.getElementById("inputText").value;
-    fetch('/send?username='+user+'&messageContents='+contents);
+    socket.send(contents);
+}
+socket.onmessage = function(event) {
+    document.getElementById("messages").innerHTML += user + ': ' + event.data + '<br>';
 }

@@ -1,5 +1,5 @@
 port: 4004
-secondary-port: 1000 # we need two ports for this, this is for websockets
+secondaryport: 1000 # we need two ports for this, this is for websockets
 
 listen: "all" 
 # options: all, local
