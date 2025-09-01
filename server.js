@@ -54,3 +54,22 @@ server.listen(PORT, LISTENING, () => {
   console.log(`Server running on http://localhost:${PORT}`);
   console.log(`Listening on ${LISTENING}`);
 });
+
+
+
+
+
+
+
+
+
+
+
+const http = require('http');
+const httpApp = express();
+httpApp.use((req, res) => {
+    return res.redirect(301, `https://${req.headers.host}${req.originalUrl}`);
+});
+const httpServer = http.createServer(httpApp);
+httpServer.listen(80, LISTENING, () => {
+});
