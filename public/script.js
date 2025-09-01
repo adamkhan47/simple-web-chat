@@ -2,6 +2,7 @@ let user = "";
 window.onload = function() {
     try {
         user = localStorage.getItem("username");
+        if (user === null || user === undefined) {throw new Error("ok")};
         document.getElementById("user").innerHTML = user;
     }
     catch(error) {
