@@ -4,6 +4,7 @@ const app = express();
 const yaml = require('js-yaml');
 const fs = require('fs');
 const WebSocket = require('ws');
+const https = require('https');
 
 // #region config.yaml reading here
 const fileContents = fs.readFileSync('config.yaml', 'utf8');
@@ -19,6 +20,11 @@ const betterConsole = config.alerts;
 // #endregion 
 
 //#region ws place
+const options = {
+    key: fs.readFileSync('ssl-certs/server.key'),
+    cert: fs.readFileSync('ssl-certs/server.crt')
+};
+const server = https.createServer(options, app);
 
 const wss = new WebSocket.Server({ port: Number(WSPORT)});
 wss.on('connection', function connection(ws) {
@@ -38,7 +44,13 @@ wss.on('connection', function connection(ws) {
 //#endregion
 
 app.use(express.static(path.join(__dirname, "public")));
-app.listen(PORT, LISTENING, () => {
+
+
+
+
+
+
+server.listen(PORT, LISTENING, () => {
   console.log(`Server running on http://localhost:${PORT}`);
   console.log(`Listening on ${LISTENING}`);
 });
