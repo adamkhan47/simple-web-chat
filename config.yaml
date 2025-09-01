@@ -1,0 +1,10 @@
+port: 4004
+
+listen: "all" 
+# options: all, local
+# local: no clue why would you need local.
+# all: is if you want every device to be able to access this
+
+alerts: true # better console.logs
+
+environment: "user" # use dev if building and use "user" for normal use
