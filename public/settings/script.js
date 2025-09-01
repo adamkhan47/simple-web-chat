@@ -1,11 +1,11 @@
 window.onload = function() {
     const checkbox = document.getElementById('notifications');
     const checkbox1 = document.getElementById('autorefresh');
-    const checkbox2 = document.getElementById('notifications');
+    const checkbox2 = document.getElementById('autorefreshautosave');
 
-    checkbox.checked = localStorage.getItem("notifications");
-    checkbox1.checked = localStorage.getItem("autoRefresh");
-    checkbox2.checked = localStorage.getItem("autoSave");
+    checkbox.checked  = localStorage.getItem("notifications") === "true";
+    checkbox1.checked = localStorage.getItem("autoRefresh") === "true";
+    checkbox2.checked = localStorage.getItem("autoSave") === "true";
 };
 
 async function notifications() {
