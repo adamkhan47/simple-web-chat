@@ -27,7 +27,9 @@ wss.on('connection', function connection(ws) {
         if (betterConsole) {console.log('received: %s', message);}
         wss.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
-                client.send(message.toString());
+                let array = JSON.parse(message.toString());
+                let string = array[0] + ": " + array[1];
+                client.send(string);
             }
         });
     });

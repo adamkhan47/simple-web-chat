@@ -20,8 +20,9 @@ function setUser() {
 }
 function send() {
     let contents = document.getElementById("inputText").value;
-    socket.send(contents);
+    let array = JSON.stringify([user,contents]);
+    socket.send(array);
 }
 socket.onmessage = function(event) {
-    document.getElementById("messages").innerHTML += user + ': ' + event.data + '<br>';
+    document.getElementById("messages").innerHTML += event.data + '<br>';
 }
