@@ -1,6 +1,6 @@
 window.onload = function() {
     const checkbox1 = document.getElementById('autorefresh');
-    const checkbox2 = document.getElementById('autorefreshautosave');
+    const checkbox2 = document.getElementById('autosave');
 
     checkbox1.checked = localStorage.getItem("autoRefresh") === "true";
     checkbox2.checked = localStorage.getItem("autoSave") === "true";
@@ -15,7 +15,7 @@ function autoRefresh() {
     }
 }
 function autoSave() {
-    const checkbox = document.getElementById('autorefreshautosave');
+    const checkbox = document.getElementById('autosave');
     if (checkbox.checked === false) {
         localStorage.setItem("autoSave", "false");
     }

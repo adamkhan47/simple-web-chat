@@ -1,5 +1,5 @@
 let user = "";
-let autorefresh; let autorefreshautosave;
+let autorefresh; let autosave;
 const socket = new WebSocket("wss://" + location.hostname);
 window.onload = function() {
     try {
@@ -12,7 +12,7 @@ window.onload = function() {
        console.log(error);
     }
     autorefresh = localStorage.getItem("autoRefresh") === "true";
-    autorefreshautosave = localStorage.getItem("autoSave") === "true";
+    autosave = localStorage.getItem("autoSave") === "true";
     if (localStorage.getItem("saveInStorage") === "true") {
         document.getElementById("messages").innerHTML = localStorage.getItem("save");
     }
@@ -36,10 +36,7 @@ socket.onmessage = function(event) {
 socket.onclose = function(event) {
     document.getElementById("status").innerHTML = "🔴";
     if (autorefresh) {
-        if (autorefreshautosave) {
-            localStorage.setItem("save",document.getElementById("messages").innerHTML);
-            localStorage.setItem("saveInStorage","true");
-        }
+        saveFunc();
         window.location.reload();
     }
 }
@@ -62,4 +59,13 @@ statusText.addEventListener('mouseenter', () => {
 });
 statusText.addEventListener('mouseleave', () => {
     hoverImage.style.display = 'none';
+});
+function saveFunc() {
+    localStorage.setItem("save",document.getElementById("messages").innerHTML);
+    localStorage.setItem("saveInStorage","true");
+}
+window.addEventListener('beforeunload', function (e) {
+    if (autosave) {
+        saveFunc();
+    }
 });
