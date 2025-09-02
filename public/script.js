@@ -1,5 +1,5 @@
 let user = "";
-let notifications; let autorefresh; let autorefreshautosave;
+let autorefresh; let autorefreshautosave;
 const socket = new WebSocket("wss://" + location.hostname);
 window.onload = function() {
     try {
@@ -11,7 +11,6 @@ window.onload = function() {
        setUser(); 
        console.log(error);
     }
-    notifications = localStorage.getItem("notifications") === "true";
     autorefresh = localStorage.getItem("autoRefresh") === "true";
     autorefreshautosave = localStorage.getItem("autoSave") === "true";
     if (localStorage.getItem("saveInStorage") === "true") {
