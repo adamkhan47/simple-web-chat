@@ -23,3 +23,12 @@ function autoSave() {
         localStorage.setItem("autoSave", "true");
     }
 }
+function autoClear() {
+    const checkbox = document.getElementById('autoclear');
+    if (checkbox.checked === false) {
+        localStorage.setItem("autoClear", "false");
+    }
+    else {
+        localStorage.setItem("autoClear", "true");
+    }
+}

@@ -1,5 +1,5 @@
 let user = "";
-let autorefresh; let autosave;
+let autorefresh; let autosave; let autoclear;
 const socket = new WebSocket("wss://" + location.hostname);
 window.onload = function() {
     try {
@@ -13,6 +13,7 @@ window.onload = function() {
     }
     autorefresh = localStorage.getItem("autoRefresh") === "true";
     autosave = localStorage.getItem("autoSave") === "true";
+    autoclear = localStorage.getItem("autoClear") === "true";
     if (localStorage.getItem("saveInStorage") === "true") {
         document.getElementById("messages").innerHTML = localStorage.getItem("save");
     }
@@ -29,6 +30,9 @@ function send() {
     let contents = document.getElementById("inputText").value;
     let array = JSON.stringify([user,contents]);
     socket.send(array);
+    if (autoclear) {
+        document.getElementById("inputText").value = "";
+    }
 }
 socket.onmessage = function(event) {
     document.getElementById("messages").innerHTML = event.data + '<br>' + document.getElementById("messages").innerHTML;
