@@ -34,6 +34,17 @@ function send() {
         document.getElementById("inputText").value = "";
     }
 }
+function sendImage() {
+    let contents = document.getElementById("inputText").value;
+    let image = prompt("Enter link for image");
+    if (image === null) {return;}
+    contents = contents + '<img src="' + image + '" alt="image">';
+    let array = JSON.stringify([user,contents]);
+    socket.send(array);
+    if (autoclear) {
+       document.getElementById("inputText").value = "";
+    }
+}
 socket.onmessage = function(event) {
     document.getElementById("messages").innerHTML = event.data + '<br>' + document.getElementById("messages").innerHTML;
 }
