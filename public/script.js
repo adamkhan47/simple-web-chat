@@ -1,6 +1,6 @@
 let user = "";
 let autorefresh; let autosave; let autoclear;
-const socket = new WebSocket("wss://" + location.hostname);
+const socket = new WebSocket("ws://" + location.hostname);
 window.onload = function() {
     try {
         user = localStorage.getItem("username");
