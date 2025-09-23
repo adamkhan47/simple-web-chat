@@ -1,6 +1,7 @@
 let user = "";
-let autorefresh; let autosave; let autoclear;
-const socket = new WebSocket("ws://" + location.hostname);
+let autorefresh; let autosave; let autoclear; let protocol;
+if (location.protocol === "https:") { protocol = "wss://";} else {protocol = "ws://";}
+let socket = new WebSocket(protocol + location.host);
 window.onload = function() {
     try {
         user = localStorage.getItem("username");

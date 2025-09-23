@@ -1,4 +1,4 @@
-port: 80
+port: 80 # do NOT use HTTP on port 443, and HTTPS on port 80.
 
 listen: "all" 
 # options: all, local
@@ -6,3 +6,9 @@ listen: "all"
 # all: is if you want every device to be able to access this
 
 alerts: true # better console.logs
+
+# below is https setup
+
+https: false # false uses http. true uses https.
+crtlocation: "ssl-certs/server.key" # put your crt location
+keylocation: "ssl-certs/server.crt" # put your key location

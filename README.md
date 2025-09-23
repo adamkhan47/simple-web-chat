@@ -7,4 +7,9 @@ simply download the code, use npm install to download dependencies <br>
 then node server.js <br>
 head to the website, set a user and chat. <br>
 
+# supports:
+- images
+- chat messages
+- https
+
 # built in one day
