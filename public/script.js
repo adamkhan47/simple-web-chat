@@ -16,7 +16,7 @@ window.onload = function() {
     autosave = localStorage.getItem("autoSave") === "true";
     autoclear = localStorage.getItem("autoClear") === "true";
     if (localStorage.getItem("saveInStorage") === "true") {
-        document.getElementById("messages").innerHTML = localStorage.getItem("save");
+        document.getElementById("messages").innerHTML = "---Old Messages---" +"<br> <br>" + localStorage.getItem("save");
     }
     localStorage.setItem("saveInStorage","false");
 };
@@ -53,7 +53,8 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     reader.onload = function(evt) {
         let imageBase64 = evt.target.result;
         let contents = document.getElementById("inputText").value;
-        contents = contents + '<img src="' + imageBase64 + '" alt="image">';
+        if (contents === "") {contents = "Image:"}
+        contents = contents + "<br>" + '<img src="' + imageBase64 + '" alt="image">';
         let array = JSON.stringify([user,contents]);
         socket.send(array);
         if (autoclear) {
