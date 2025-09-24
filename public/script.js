@@ -46,6 +46,22 @@ function sendImage() {
        document.getElementById("inputText").value = "";
     }
 }
+document.getElementById('fileInput').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+        let imageBase64 = evt.target.result;
+        let contents = document.getElementById("inputText").value;
+        contents = contents + '<img src="' + imageBase64 + '" alt="image">';
+        let array = JSON.stringify([user,contents]);
+        socket.send(array);
+        if (autoclear) {
+            document.getElementById("inputText").value = "";
+        }
+    };
+    reader.readAsDataURL(file);
+});
 socket.onmessage = function(event) {
     document.getElementById("messages").innerHTML = event.data + '<br>' + document.getElementById("messages").innerHTML;
 }
