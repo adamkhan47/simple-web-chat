@@ -97,8 +97,19 @@ function saveFunc() {
     localStorage.setItem("save",document.getElementById("messages").innerHTML);
     localStorage.setItem("saveInStorage","true");
 }
+function clearSaveFunc() {
+    localStorage.removeItem("save");
+    localStorage.removeItem("saveInStorage");
+    localStorage.setItem("DELETESAVE", "yes");
+    alert("Removed save!");
+}
 window.addEventListener('beforeunload', function (e) {
     if (autosave) {
-        saveFunc();
+        if (!(this.localStorage.getItem("DELETESAVE") === "yes")) {
+            saveFunc();
+        }
+        else {
+            this.localStorage.removeItem("DELETESAVE");
+        }
     }
 });
