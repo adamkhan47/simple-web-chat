@@ -16,7 +16,10 @@ window.onload = function() {
     autosave = localStorage.getItem("autoSave") === "true";
     autoclear = localStorage.getItem("autoClear") === "true";
     if (localStorage.getItem("saveInStorage") === "true") {
-        document.getElementById("messages").innerHTML = "---Old Messages---" +"<br> <br>" + localStorage.getItem("save");
+        if (localStorage.getItem("save") === "" || localStorage.getItem("save") === "null" || localStorage.getItem("save") === null) {}
+        else {
+            document.getElementById("messages").innerHTML = "---Old Messages---" +"<br> <br>" + localStorage.getItem("save");
+        }
     }
     localStorage.setItem("saveInStorage","false");
 };
