@@ -111,4 +111,9 @@ label {
 }
 img {
     max-width: 20rem;
+    max-height: 30rem;
+}
+#onlineUsers {
+    position: relative;
+    left: 40rem;
 }

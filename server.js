@@ -39,12 +39,18 @@ wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {
         if (betterConsole) {console.log('received: %s', message);}
         wss.clients.forEach(function each(client) {
+            let array;
             if (client.readyState === WebSocket.OPEN) {
-                let array = JSON.parse(message.toString());
-                let now = new Date();
-                let timeString = now.toLocaleTimeString();
-                let string = array[0] + " (" + timeString + "): " + array[1];
-                client.send(string);
+                try {
+                    array = JSON.parse(message.toString());
+                    let now = new Date();
+                    let timeString = now.toLocaleTimeString();
+                    let string = array[0] + " (" + timeString + "): " + array[1];
+                    client.send(string);
+                }
+                catch (e) {
+                    if(betterConsole) {console.log(message.toString())};
+                }
             }
         });
     });
