@@ -54,10 +54,24 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     if (!file) return;
     const reader = new FileReader();
     reader.onload = function(evt) {
-        let imageBase64 = evt.target.result;
+        let fileBase64 = evt.target.result;
         let contents = document.getElementById("inputText").value;
-        if (contents === "") {contents = "Image:"}
-        contents = contents + "<br>" + '<img src="' + imageBase64 + '" alt="image">';
+        if (file.type.startsWith('image/')) {
+            if (contents === "") {contents = "Image:"}
+            contents = contents + "<br>" + '<img src="' + fileBase64 + '" alt="image">';
+        }
+        else if (file.type.startsWith('video/')) {
+            if (contents === ""){contents = "Video:"}
+            contents += "<br>" + 
+            '<video width="640" height="360" controls>' +
+            '<source src="' + fileBase64 + '" type="video/mp4">' +
+            'Your browser does not support the video tag.' +
+            '</video>';
+        }
+        else {
+            alert("Not an image or video");
+            return;
+        }
         let array = JSON.stringify([user,contents]);
         socket.send(array);
         if (autoclear) {
