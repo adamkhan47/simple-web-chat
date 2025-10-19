@@ -37,7 +37,7 @@ if (config.https === false) {
 const wss = new WebSocket.Server({ server});
 wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {
-        if (betterConsole) {console.log('received: %s', message);}
+        if (betterConsole) {if (!message.includes("Username of new person:")) {console.log('received: %s', message);}}
         wss.clients.forEach(function each(client) {
             let array;
             if (client.readyState === WebSocket.OPEN) {
@@ -50,6 +50,7 @@ wss.on('connection', function connection(ws) {
                 }
                 catch (e) {
                     if(betterConsole) {console.log(message.toString())};
+                    client.send(message.toString());
                 }
             }
         });

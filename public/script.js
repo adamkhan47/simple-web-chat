@@ -81,7 +81,14 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     reader.readAsDataURL(file);
 });
 socket.onmessage = function(event) {
-    document.getElementById("messages").innerHTML = event.data + '<br>' + document.getElementById("messages").innerHTML;
+    let message = event.data;
+    if (message.includes("Username of new person:")) {
+        message = message.substring(23, message.length);
+        document.getElementById("users").innerHTML = message + '<br>' + document.getElementById("users").innerHTML;
+    }
+    else {
+        document.getElementById("messages").innerHTML = message + '<br>' + document.getElementById("messages").innerHTML;
+    }
 }
 socket.onclose = function(event) {
     document.getElementById("status").innerHTML = "🔴";
@@ -92,7 +99,7 @@ socket.onclose = function(event) {
 }
 socket.onopen = function(event) {
     document.getElementById("status").innerHTML = "🟢";
-    socket.send("USER " + localStorage.getItem("username"));
+    socket.send("Username of new person: " + localStorage.getItem("username"));
 }
 function settings() {
     window.open("/settings", "_blank");
