@@ -45,16 +45,25 @@ wss.on('connection', function connection(ws) {
                 if (data.type === "message") {
                     let now = new Date();
                     let timeString = now.toLocaleTimeString();
-                    let string = data.user + " (" + timeString + "): " + data.contents;
-                    client.send(string);
+                    client.send(JSON.stringify({
+                        type: "messages",
+                        user: data.user,
+                        contents: data.contents,
+                        time: timeString
+                    }));
                     console.log("sent message");
                 }
                 else if (data.type === "user") {                    
                     mapOfOnline.set(data.idLol, data.user);
                     console.log(mapOfOnline);
-                    myMap.forEach((id, name) => {
-                        client.send
+                    let string = "";
+                    mapOfOnline.forEach((name, id) => {
+                        string += name + "<br>";
                     });
+                    client.send(JSON.stringify({
+                        type: "onlineUser",
+                        contents: string
+                    }));
                 }
             }
         });

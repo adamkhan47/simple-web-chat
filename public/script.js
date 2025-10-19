@@ -90,13 +90,14 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     reader.readAsDataURL(file);
 });
 socket.onmessage = function(event) {
-    let message = event.data;
-    if (message.includes("Username of person:")) {
-        message = message.substring(20, message.length);
-        document.getElementById("users").innerHTML = message + '<br>' + document.getElementById("users").innerHTML;
-    }
-    else {
+    let data = JSON.parse(event.data);
+    if (data.type === "messages") {
+        let message = "";
+        message = data.user + " (" + data.time + "): " + data.contents;
         document.getElementById("messages").innerHTML = message + '<br>' + document.getElementById("messages").innerHTML;
+    }
+    else if (data.type === "onlineUser") {
+        document.getElementById("users").innerHTML = data.contents;
     }
 }
 socket.onclose = function(event) {
