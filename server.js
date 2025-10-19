@@ -35,22 +35,26 @@ if (config.https === false) {
 
 
 const wss = new WebSocket.Server({ server});
+let mapOfOnline = new Map();
 wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {
-        if (betterConsole) {if (!message.includes("Username of new person:")) {console.log('received: %s', message);}}
+        const data = JSON.parse(message);
+        if (betterConsole) {if (!message.includes("Username of person:")) {console.log('received: %s', message);}}
         wss.clients.forEach(function each(client) {
-            let array;
             if (client.readyState === WebSocket.OPEN) {
-                try {
-                    array = JSON.parse(message.toString());
+                if (data.type === "message") {
                     let now = new Date();
                     let timeString = now.toLocaleTimeString();
-                    let string = array[0] + " (" + timeString + "): " + array[1];
+                    let string = data.user + " (" + timeString + "): " + data.contents;
                     client.send(string);
+                    console.log("sent message");
                 }
-                catch (e) {
-                    if(betterConsole) {console.log(message.toString())};
-                    client.send(message.toString());
+                else if (data.type === "user") {                    
+                    mapOfOnline.set(data.idLol, data.user);
+                    console.log(mapOfOnline);
+                    myMap.forEach((id, name) => {
+                        client.send
+                    });
                 }
             }
         });

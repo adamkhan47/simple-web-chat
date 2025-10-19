@@ -1,5 +1,6 @@
 let user = "";
 let autorefresh; let autosave; let autoclear; let protocol;
+let id = Math.floor(Math.random() * 1000)
 if (location.protocol === "https:") { protocol = "wss://";} else {protocol = "ws://";}
 let socket = new WebSocket(protocol + location.host);
 window.onload = function() {
@@ -31,9 +32,11 @@ function setUser() {
     document.getElementById("user").innerHTML = user;
 }
 function send() {
-    let contents = document.getElementById("inputText").value;
-    let array = JSON.stringify([user,contents]);
-    socket.send(array);
+    socket.send(JSON.stringify({
+        type: "message",
+        user: localStorage.getItem("username"),
+        contents: document.getElementById("inputText").value
+    }));
     if (autoclear) {
         document.getElementById("inputText").value = "";
     }
@@ -43,8 +46,11 @@ function sendImage() {
     let image = prompt("Enter link for image");
     if (image === null) {return;}
     contents = contents + '<img src="' + image + '" alt="image">';
-    let array = JSON.stringify([user,contents]);
-    socket.send(array);
+    socket.send(JSON.stringify({
+        type: "message",
+        user: localStorage.getItem("username"),
+        contents: contents
+    }));
     if (autoclear) {
        document.getElementById("inputText").value = "";
     }
@@ -72,8 +78,11 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
             alert("Not an image or video");
             return;
         }
-        let array = JSON.stringify([user,contents]);
-        socket.send(array);
+        socket.send(JSON.stringify({
+            type: "message",
+            user: localStorage.getItem("username"),
+            contents: contents
+        }));
         if (autoclear) {
             document.getElementById("inputText").value = "";
         }
@@ -82,8 +91,8 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
 });
 socket.onmessage = function(event) {
     let message = event.data;
-    if (message.includes("Username of new person:")) {
-        message = message.substring(23, message.length);
+    if (message.includes("Username of person:")) {
+        message = message.substring(20, message.length);
         document.getElementById("users").innerHTML = message + '<br>' + document.getElementById("users").innerHTML;
     }
     else {
@@ -99,7 +108,13 @@ socket.onclose = function(event) {
 }
 socket.onopen = function(event) {
     document.getElementById("status").innerHTML = "🟢";
-    socket.send("Username of new person: " + localStorage.getItem("username"));
+    setInterval (() => {
+        socket.send(JSON.stringify({
+            type: "user",
+            idLol: id,
+            user: localStorage.getItem("username")
+        }));
+    }, 1000);
 }
 function settings() {
     window.open("/settings", "_blank");
