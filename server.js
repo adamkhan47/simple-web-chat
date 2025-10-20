@@ -56,6 +56,7 @@ wss.on('connection', function connection(ws) {
                 else if (data.type === "user") {                    
                     mapOfOnline.set(data.idLol, data.user);
                     console.log(mapOfOnline);
+                    console.log(wss.clients.size);
                     let string = "";
                     mapOfOnline.forEach((name, id) => {
                         string += name + "<br>";
@@ -68,7 +69,13 @@ wss.on('connection', function connection(ws) {
             }
         });
     });
+    ws.on('close', () => {
+        mapOfOnline.clear();
+        console.log("Cleared due to disconnect");
+    });
 });
+
+
 //#endregion
 
 app.use(express.static(path.join(__dirname, "public")));
