@@ -6,6 +6,11 @@ const fs = require('fs');
 const WebSocket = require('ws');
 const http = require('http');
 const https = require('https');
+const readline = require('readline');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 let server;
 // #region config.yaml reading here
 const fileContents = fs.readFileSync('config.yaml', 'utf8');
@@ -33,10 +38,11 @@ if (config.https === false) {
 }
 // #endregion 
 
-
+let clientGlobal;
 const wss = new WebSocket.Server({ server});
 let mapOfOnline = new Map();
 wss.on('connection', function connection(ws) {
+    clientGlobal = ws;
     ws.on('message', function incoming(message) {
         const data = JSON.parse(message);
         if (betterConsole) {if (message.includes('{"type":"user"') !== true) {console.log('received: %s', message);}}
@@ -72,6 +78,27 @@ wss.on('connection', function connection(ws) {
         if (betterConsole) {console.log("Cleared due to disconnect")};
     });
 });
+
+
+const askForInput = () => {
+    rl.question('What would you like to send?', (answer) => {
+        if (clientGlobal && clientGlobal.readyState === WebSocket.OPEN) {
+            clientGlobal.send(JSON.stringify({
+                type: "messages",
+                user: "SERVER",
+                contents: answer,
+                time: "server"
+            }));
+        }
+        else {
+            console.log("Nobody is connected, wait for someone online. Crash would happen but this prevents it.");
+        }
+        askForInput();
+    });
+};
+setTimeout(() => {
+    askForInput();
+}, 1000);
 
 
 //#endregion
