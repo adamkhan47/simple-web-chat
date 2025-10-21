@@ -39,7 +39,7 @@ let mapOfOnline = new Map();
 wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {
         const data = JSON.parse(message);
-        if (betterConsole) {if (!message.includes("Username of person:")) {console.log('received: %s', message);}}
+        if (betterConsole) {if (message.includes('{"type":"user"') !== true) {console.log('received: %s', message);}}
         wss.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
                 if (data.type === "message") {
@@ -51,12 +51,10 @@ wss.on('connection', function connection(ws) {
                         contents: data.contents,
                         time: timeString
                     }));
-                    console.log("sent message");
+                    if(betterConsole) {console.log("sent message")};
                 }
                 else if (data.type === "user") {                    
                     mapOfOnline.set(data.idLol, data.user);
-                    console.log(mapOfOnline);
-                    console.log(wss.clients.size);
                     let string = "";
                     mapOfOnline.forEach((name, id) => {
                         string += name + "<br>";
@@ -71,7 +69,7 @@ wss.on('connection', function connection(ws) {
     });
     ws.on('close', () => {
         mapOfOnline.clear();
-        console.log("Cleared due to disconnect");
+        if (betterConsole) {console.log("Cleared due to disconnect")};
     });
 });
 

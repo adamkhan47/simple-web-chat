@@ -5,7 +5,7 @@ listen: "all"
 # local: no clue why would you need local.
 # all: is if you want every device to be able to access this
 
-alerts: false # better console.logs
+alerts: true # better console.logs
 
 # below is https setup
 
