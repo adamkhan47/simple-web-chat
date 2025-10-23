@@ -129,4 +129,5 @@ img {
     border-color: rgb(240,240,240);
     border-style:solid;
     padding: 1rem;
+    max-width: 13rem;
 }

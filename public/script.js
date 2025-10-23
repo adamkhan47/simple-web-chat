@@ -7,6 +7,7 @@ window.onload = function() {
     try {
         user = localStorage.getItem("username");
         if (user === null || user === undefined) {throw new Error("ok")};
+        if (user.length > 20) {alert("Too long"); user = "Im a loser";}
         document.getElementById("user").innerHTML = user;
     }
     catch(error) {
@@ -27,11 +28,16 @@ window.onload = function() {
 function setUser() {
     let userr = prompt("Enter your username");
     if (userr === null) {return;}
+    if (userr.length > 15) {alert("Too long"); return;}
     user = userr;
     localStorage.setItem("username", user);
     document.getElementById("user").innerHTML = user;
 }
 function send() {
+    if (document.getElementById("inputText").value.length > 300) {
+        alert("Too long");
+        return;
+    }
     socket.send(JSON.stringify({
         type: "message",
         user: localStorage.getItem("username"),
