@@ -41,6 +41,7 @@ function send() {
     socket.send(JSON.stringify({
         type: "message",
         user: localStorage.getItem("username"),
+        id: id,
         contents: document.getElementById("inputText").value
     }));
     if (autoclear) {
@@ -55,6 +56,7 @@ function sendImage() {
     socket.send(JSON.stringify({
         type: "message",
         user: localStorage.getItem("username"),
+        id: id,
         contents: contents
     }));
     if (autoclear) {
@@ -87,6 +89,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
         socket.send(JSON.stringify({
             type: "message",
             user: localStorage.getItem("username"),
+            id: id,
             contents: contents
         }));
         if (autoclear) {
@@ -104,6 +107,11 @@ socket.onmessage = function(event) {
     }
     else if (data.type === "onlineUser") {
         document.getElementById("users").innerHTML = data.contents;
+    }
+    else if (data.type === "alert") {
+        if ((data.user === user) && (data.id === id)) {
+            alert(data.message);
+        }
     }
 }
 socket.onclose = function(event) {

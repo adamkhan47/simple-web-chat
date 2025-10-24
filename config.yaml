@@ -7,6 +7,7 @@ listen: "all"
 
 alerts: true # better console.logs
 
+ratelimit: 12 # how many times message can be sent a minute
 # below is https setup
 
 https: false # false uses http. true uses https.

@@ -24,6 +24,7 @@ if (LISTENING === "local") {LISTENING = '127.0.0.1';}
 else if (LISTENING === "all") {LISTENING = '0.0.0.0'} 
 
 const betterConsole = config.alerts;
+const ratelimit = config.ratelimit;
 
 if (config.https) {
     const options = {
@@ -41,6 +42,8 @@ if (config.https === false) {
 let clientGlobal;
 const wss = new WebSocket.Server({ server});
 let mapOfOnline = new Map();
+let mapOfRatelimit = new Map();
+let rateLimitSeconds = 0;
 wss.on('connection', function connection(ws) {
     clientGlobal = ws;
     ws.on('message', function incoming(message) {
@@ -49,6 +52,22 @@ wss.on('connection', function connection(ws) {
         wss.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
                 if (data.type === "message") {
+                    let number = mapOfRatelimit.get(data.id);
+                    if (number === null || number === "0" || number === undefined || number === "NaN") {
+                        number = 0;
+                    }
+                    if (number > ratelimit) {
+                        client.send(JSON.stringify({
+                            type: "alert",
+                            user: data.user,
+                            id: data.id,
+                            message: ("Ratelimited. Try again in " + (60 - rateLimitSeconds) + " seconds.")
+                        }));
+                        return;
+                    }
+                    else {
+                        number = number + 1;
+                    }
                     let now = new Date();
                     let timeString = now.toLocaleTimeString();
                     client.send(JSON.stringify({
@@ -57,6 +76,8 @@ wss.on('connection', function connection(ws) {
                         contents: data.contents,
                         time: timeString
                     }));
+                    console.log(mapOfRatelimit);
+                    mapOfRatelimit.set(data.id, number);
                     if(betterConsole) {console.log("sent message")};
                 }
                 else if (data.type === "user") {                    
@@ -98,6 +119,13 @@ const askForInput = () => {
 };
 setTimeout(() => {
     askForInput();
+}, 1000);
+
+setInterval(() => {
+    rateLimitSeconds = rateLimitSeconds + 1;
+    if (rateLimitSeconds >= 60) {
+        mapOfRatelimit.clear();
+    }
 }, 1000);
 
 
